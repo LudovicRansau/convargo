@@ -144,20 +144,32 @@ const actors = [{
 function findTruckerById(truckerId) {
     var res = 0;
     truckers.forEach(function(trucker) {
-        if (trucker.id === truckerId) {
+        if(trucker.id === truckerId) {
             res = trucker;
         }
     });
+
     return res;
 }
 
 function updateDeliveryPrice(delivery) {
+
     var trucker = findTruckerById(delivery.truckerId);
     if (trucker === 0) {
         return;
     }
     delivery.price = delivery.distance * trucker.pricePerKm;
 
+    var deliveryPricePerVolume = trucker.pricePerVolume;
+    if(delivery.volume > 25) {
+        deliveryPricePerVolume = trucker.pricePerVolume - (trucker.pricePerVolume*50)/100;
+    }else if(delivery.volume > 10) {
+        deliveryPricePerVolume = trucker.pricePerVolume - (trucker.pricePerVolume*30)/100;
+    }else if(delivery.volume > 5) {
+        deliveryPricePerVolume = trucker.pricePerVolume - (trucker.pricePerVolume*10)/100;
+    }
+
+    delivery.price += delivery.volume * deliveryPricePerVolume;
 }
 
 deliveries.forEach(function(delivery) {
