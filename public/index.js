@@ -141,6 +141,31 @@ const actors = [{
   }]
 }];
 
-console.log(truckers);
+function findTruckerById(truckerId) {
+    var res = 0;
+    truckers.forEach(function(trucker) {
+        if (trucker.id === truckerId) {
+            res = trucker;
+        }
+    });
+    return res;
+}
+
+function updateDeliveryPrice(delivery) {
+    var trucker = findTruckerById(delivery.truckerId);
+    if (trucker === 0) {
+        return;
+    }
+    delivery.price = delivery.distance * trucker.pricePerKm;
+
+}
+
+deliveries.forEach(function(delivery) {
+    updateDeliveryPrice(delivery)
+});
+
 console.log(deliveries);
-console.log(actors);
+
+//console.log(truckers);
+//console.log(deliveries);
+//console.log(actors);
